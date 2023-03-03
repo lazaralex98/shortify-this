@@ -8,16 +8,25 @@ function IndexPopup() {
     (Math.random() + 1).toString(36).substring(7)
   )
   const [shortenedURL, setShortenedURL] = useState(url + slug)
+  const [copied, setCopied] = useState(false)
 
   const saveInClipboard = () => {
     navigator.clipboard.writeText(url + slug)
-    // TODO: show a toast or a tooltip
-    alert("Copied url to clipboard")
+    setCopied(true)
   }
 
   useEffect(() => {
     setShortenedURL(url + slug)
   }, [url, slug])
+
+  useEffect(() => {
+    if (copied) {
+      const timer = setTimeout(() => {
+        setCopied(false)
+      }, 3 * 1_000)
+      return () => clearTimeout(timer)
+    }
+  }, [copied])
 
   return (
     <Container>
@@ -60,8 +69,13 @@ function IndexPopup() {
               <div
                 onClick={saveInClipboard}
                 id="shortened-url"
-                className="block w-full rounded-md border-0 bg-gray-50 p-1.5 shadow-sm ring-1 ring-gray-200 cursor-pointer text-gray-400 sm:text-sm sm:leading-6">
-                {shortenedURL}
+                className="flex w-full rounded-md border-0 bg-gray-50 shadow-sm ring-1 ring-gray-200 cursor-pointer text-gray-400 sm:text-sm sm:leading-6">
+                <span className="inline-flex p-1.5 text-gray-500">
+                  {shortenedURL}
+                </span>
+                <span className="inline-flex items-center rounded-r-md p-1.5 text-gray-500 sm:text-sm border-l">
+                  {copied ? "Copied!" : "Copy."}
+                </span>
               </div>
             </div>
           </div>
