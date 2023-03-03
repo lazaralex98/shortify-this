@@ -7,11 +7,13 @@ function IndexPopup() {
   const [slug, setSlug] = useState(
     (Math.random() + 1).toString(36).substring(7)
   )
+  // TODO: get username
+  const username = "alex"
   const [shortenedURL, setShortenedURL] = useState(url + slug)
   const [copied, setCopied] = useState(false)
 
   const saveInClipboard = () => {
-    navigator.clipboard.writeText(url + slug)
+    navigator.clipboard.writeText(shortenedURL)
     setCopied(true)
   }
 
@@ -32,7 +34,7 @@ function IndexPopup() {
   }, [])
 
   useEffect(() => {
-    setShortenedURL(url + slug)
+    setShortenedURL(`https://shortifythis.com/l/${username}/${slug}`)
   }, [url, slug])
 
   useEffect(() => {
