@@ -15,6 +15,12 @@ function IndexPopup() {
     setCopied(true)
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    // TODO: save in planetscale db using react-query
+    // TODO: display loading state, success state, error state
+  }
+
   useEffect(() => {
     setShortenedURL(url + slug)
   }, [url, slug])
@@ -31,12 +37,7 @@ function IndexPopup() {
   return (
     <Container>
       <Header />
-      <form
-        className="mt-4"
-        onSubmit={(e) => {
-          e.preventDefault()
-          // TODO: save in db and show a toast or a tooltip for success; for db we can use PlanetScale
-        }}>
+      <form className="mt-4" onSubmit={handleSubmit}>
         {/* url input */}
         <Input
           label="URL"
