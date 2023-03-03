@@ -9,6 +9,11 @@ function IndexPopup() {
   )
   const [shortenedURL, setShortenedURL] = useState(url + slug)
 
+  const saveInClipboard = () => {
+    navigator.clipboard.writeText(url + slug)
+    alert("Copied url to clipboard")
+  }
+
   useEffect(() => {
     setShortenedURL(url + slug)
   }, [url, slug])
@@ -25,7 +30,7 @@ function IndexPopup() {
         <Input
           label="URL"
           type="url"
-          placeholder="https://very-long-url.com"
+          placeholder="https://very-long-url.com/"
           id="url"
           value={url}
           setValue={setURL}
@@ -51,6 +56,7 @@ function IndexPopup() {
             </label>
             <div className="mt-2">
               <div
+                onClick={saveInClipboard}
                 id="shortened-url"
                 className="block w-full rounded-md border-0 bg-gray-50 p-1.5 shadow-sm ring-1 ring-gray-200 cursor-pointer text-gray-400 sm:text-sm sm:leading-6">
                 {shortenedURL}
