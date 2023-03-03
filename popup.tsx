@@ -11,6 +11,7 @@ function IndexPopup() {
 
   const saveInClipboard = () => {
     navigator.clipboard.writeText(url + slug)
+    // TODO: show a toast or a tooltip
     alert("Copied url to clipboard")
   }
 
@@ -25,6 +26,7 @@ function IndexPopup() {
         className="mt-4"
         onSubmit={(e) => {
           e.preventDefault()
+          // TODO: save in db and show a toast or a tooltip for success; for db we can use PlanetScale
         }}>
         {/* url input */}
         <Input
