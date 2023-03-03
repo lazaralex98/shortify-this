@@ -17,9 +17,19 @@ function IndexPopup() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+
     // TODO: save in planetscale db using react-query
     // TODO: display loading state, success state, error state
   }
+
+  useEffect(() => {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      var activeTab = tabs[0]
+      if (activeTab && activeTab.url) {
+        setURL(activeTab.url)
+      }
+    })
+  }, [])
 
   useEffect(() => {
     setShortenedURL(url + slug)
