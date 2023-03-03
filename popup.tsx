@@ -80,17 +80,15 @@ function IndexPopup() {
               <div
                 onClick={saveInClipboard}
                 id="shortened-url"
-                className="flex w-full rounded-md border-0 bg-gray-50 shadow-sm ring-1 ring-gray-200 cursor-pointer text-gray-400 sm:text-sm sm:leading-6">
-                <span className="inline-flex p-1.5 text-gray-500">
-                  {shortenedURL}
-                </span>
-                <span className="inline-flex items-center rounded-r-md p-1.5 text-gray-500 sm:text-sm border-l">
-                  {copied ? "Copied!" : "Copy."}
-                </span>
+                className="flex w-ful rounded-md p-1.5 border-0 bg-gray-50 shadow-sm ring-1 ring-gray-200 cursor-pointer text-gray-400 sm:text-sm sm:leading-6">
+                <span className="truncate">{shortenedURL}</span>
               </div>
             </div>
           </div>
         </div>
+        <p className="text-gray-400 sm:text-sm sm:leading-6 mt-2">
+          {copied ? "Copied." : "Click ^ to copy."}
+        </p>
 
         {/* button */}
         <button
