@@ -1,11 +1,13 @@
 import "./style.css"
 
-import type { User } from "@supabase/supabase-js"
 import { useEffect, useState } from "react"
+import { QueryClient, QueryClientProvider, useMutation } from "react-query"
 
 import Input from "~components/input"
 import { supabase } from "~core/store"
 import { generateRandomString, getURL } from "~utils"
+
+const queryClient = new QueryClient()
 
 export default function Options() {
   // TODO fetch username and premium status from db
@@ -27,18 +29,20 @@ export default function Options() {
   }, [])
 
   return (
-    <Container>
-      <main className="relative -mt-32">
-        <div className="mx-auto max-w-screen-xl px-4 pb-6 sm:px-6 lg:px-8 lg:pb-16">
-          <div className="overflow-hidden rounded-lg bg-white shadow">
-            <div className="divide-y divide-gray-200  lg:divide-y-0 lg:divide-x">
-              {!session && <AuthForm />}
-              {session && <OptionsForm />}
+    <QueryClientProvider client={queryClient}>
+      <Container>
+        <main className="relative -mt-32">
+          <div className="mx-auto max-w-screen-xl px-4 pb-6 sm:px-6 lg:px-8 lg:pb-16">
+            <div className="overflow-hidden rounded-lg bg-white shadow">
+              <div className="divide-y divide-gray-200  lg:divide-y-0 lg:divide-x">
+                {!session && <AuthForm />}
+                {session && <OptionsForm />}
+              </div>
             </div>
           </div>
-        </div>
-      </main>
-    </Container>
+        </main>
+      </Container>
+    </QueryClientProvider>
   )
 }
 
@@ -111,27 +115,21 @@ function Container({ children }) {
 function AuthForm() {
   const [email, setEmail] = useState("")
 
-  const handleAuth = async (e: { preventDefault: () => void }) => {
+  const auth = useMutation((e: { preventDefault: () => void }) => {
     e.preventDefault()
-    const { data, error } = await supabase.auth.signInWithOtp({
+    return supabase.auth.signInWithOtp({
       email: email,
       options: {
         emailRedirectTo: getURL()
       }
     })
-    if (error) {
-      console.log("auth error", error)
-    }
-    if (data) {
-      console.log("auth data", data)
-    }
-  }
+  })
 
   return (
     <form
       className="space-y-6 py-6 px-4 sm:p-6 lg:pb-8"
       method="POST"
-      onClick={handleAuth}>
+      onSubmit={auth.mutate}>
       <Input
         id="email"
         label="Email"
@@ -145,7 +143,13 @@ function AuthForm() {
         <button
           type="submit"
           className="flex w-full justify-center rounded-md bg-blue-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
-          Authenticate
+          {auth.isLoading && "Loading..."}
+          {auth.isError && "Error"}
+          {auth.isSuccess && "Check your email!"}
+          {!auth.isLoading &&
+            !auth.isError &&
+            !auth.isSuccess &&
+            "Send magic link!"}
         </button>
       </div>
     </form>
