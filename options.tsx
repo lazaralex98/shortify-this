@@ -6,10 +6,17 @@ import Input from "~components/input"
 import { generateRandomString } from "~utils"
 
 export default function Options() {
+  // TODO fetch username and premium status from db
   const [username, setUsername] = useState("alex")
   const [premium, setPremium] = useState(false)
 
   const exampleSlug = premium ? "your-custom-slug" : generateRandomString()
+
+  const handleSubmit = (e: { preventDefault: () => void }) => {
+    e.preventDefault()
+    // TODO: save options in db
+    // TODO: display loading state, success state, error state
+  }
 
   return (
     <Container>
@@ -19,10 +26,7 @@ export default function Options() {
             <div className="divide-y divide-gray-200  lg:divide-y-0 lg:divide-x">
               <form
                 className="divide-y divide-gray-200"
-                onSubmit={(e) => {
-                  e.preventDefault()
-                  console.log("submit")
-                }}
+                onSubmit={handleSubmit}
                 method="POST">
                 <div className="py-6 px-4 sm:p-6 lg:pb-8">
                   {/* form header */}

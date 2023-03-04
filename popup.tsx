@@ -8,7 +8,7 @@ import "./style.css"
 function IndexPopup() {
   const [url, setURL] = useState("https://very-long-url.com/")
   const [slug, setSlug] = useState(generateRandomString())
-  // TODO: get username
+  // TODO: fetch the username
   const username = "alex"
   const [shortenedURL, setShortenedURL] = useState(url + slug)
   const [copied, setCopied] = useState(false)
@@ -20,8 +20,7 @@ function IndexPopup() {
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault()
-
-    // TODO: save in planetscale db using react-query
+    // TODO: save link in db
     // TODO: display loading state, success state, error state
   }
 
