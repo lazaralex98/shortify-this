@@ -1,13 +1,30 @@
 import "./style.css"
 
+import type { User } from "@supabase/supabase-js"
 import { useEffect, useState } from "react"
 
 import Input from "~components/input"
+import { supabase } from "~core/store"
 import { generateRandomString } from "~utils"
 
 export default function Options() {
   // TODO fetch username and premium status from db
+  const [session, setSession] = useState(null)
 
+  useEffect(() => {
+    async function getSession() {
+      const { data, error } = await supabase.auth.getSession()
+      if (error) {
+        console.log(error)
+      }
+      if (data) {
+        setSession(data.session)
+      }
+    }
+    if (!session) {
+      getSession()
+    }
+  }, [])
 
 
   return (
@@ -16,7 +33,7 @@ export default function Options() {
         <div className="mx-auto max-w-screen-xl px-4 pb-6 sm:px-6 lg:px-8 lg:pb-16">
           <div className="overflow-hidden rounded-lg bg-white shadow">
             <div className="divide-y divide-gray-200  lg:divide-y-0 lg:divide-x">
-              <OptionsForm />
+              {session && <OptionsForm />}
             </div>
           </div>
         </div>
