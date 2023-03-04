@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react"
 
 import Input from "~components/input"
+import { generateRandomString } from "~utils"
 
 import "./style.css"
 
 function IndexPopup() {
   const [url, setURL] = useState("https://very-long-url.com/")
-  const [slug, setSlug] = useState(
-    (Math.random() + 1).toString(36).substring(7)
-  )
+  const [slug, setSlug] = useState(generateRandomString())
   // TODO: get username
   const username = "alex"
   const [shortenedURL, setShortenedURL] = useState(url + slug)
