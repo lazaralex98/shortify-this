@@ -79,7 +79,8 @@ export default function Options() {
                           />
                         </svg>{" "}
                         The above is how your links will look when shortened. "
-                        {exampleSlug}" is the slug and you can change it.
+                        {exampleSlug}" is the slug and you can change it (if on
+                        a premium plan).
                       </p>
                     </div>
                   </div>
