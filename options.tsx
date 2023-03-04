@@ -26,13 +26,13 @@ export default function Options() {
     }
   }, [])
 
-
   return (
     <Container>
       <main className="relative -mt-32">
         <div className="mx-auto max-w-screen-xl px-4 pb-6 sm:px-6 lg:px-8 lg:pb-16">
           <div className="overflow-hidden rounded-lg bg-white shadow">
             <div className="divide-y divide-gray-200  lg:divide-y-0 lg:divide-x">
+              {!session && <AuthForm />}
               {session && <OptionsForm />}
             </div>
           </div>
@@ -105,6 +105,50 @@ function Container({ children }) {
 
       {children}
     </div>
+  )
+}
+
+function AuthForm() {
+  const [email, setEmail] = useState("")
+
+  const handleAuth = async (e: { preventDefault: () => void }) => {
+    e.preventDefault()
+    const { data, error } = await supabase.auth.signInWithOtp({
+      email: email,
+      options: {
+        emailRedirectTo: "https://shortifythis.com/welcome"
+      }
+    })
+    if (error) {
+      console.log("auth error", error)
+    }
+    if (data) {
+      console.log("auth data", data)
+    }
+  }
+
+  return (
+    <form
+      className="space-y-6 py-6 px-4 sm:p-6 lg:pb-8"
+      method="POST"
+      onClick={handleAuth}>
+      <Input
+        id="email"
+        label="Email"
+        placeholder="alex@example.com"
+        type="email"
+        value={email}
+        setValue={setEmail}
+      />
+
+      <div>
+        <button
+          type="submit"
+          className="flex w-full justify-center rounded-md bg-blue-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+          Authenticate
+        </button>
+      </div>
+    </form>
   )
 }
 
