@@ -17,7 +17,7 @@ function IndexPopup() {
     setCopied(true)
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault()
 
     // TODO: save in planetscale db using react-query
@@ -120,7 +120,7 @@ function IndexPopup() {
 
 export default IndexPopup
 
-function Container({ children }) {
+function Container({ children }: { children: React.ReactNode }) {
   return (
     <div className="bg-white shadow sm:rounded-lg w-72">
       <div className="px-4 py-5 sm:p-6">{children}</div>
@@ -144,7 +144,21 @@ function Header() {
   )
 }
 
-function Input({ label, type, placeholder, id, value, setValue }) {
+function Input({
+  label,
+  type,
+  placeholder,
+  id,
+  value,
+  setValue
+}: {
+  label: string
+  type: string
+  placeholder: string
+  id: string
+  value: string
+  setValue: (value: string) => void
+}) {
   return (
     <div className="-space-y-px rounded-md shadow-sm mt-2">
       <div>
