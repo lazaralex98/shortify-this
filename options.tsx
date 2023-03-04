@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 
 import Input from "~components/input"
 import { supabase } from "~core/store"
-import { generateRandomString } from "~utils"
+import { generateRandomString, getURL } from "~utils"
 
 export default function Options() {
   // TODO fetch username and premium status from db
@@ -116,7 +116,7 @@ function AuthForm() {
     const { data, error } = await supabase.auth.signInWithOtp({
       email: email,
       options: {
-        emailRedirectTo: "https://shortifythis.com/welcome"
+        emailRedirectTo: getURL()
       }
     })
     if (error) {
