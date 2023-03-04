@@ -118,11 +118,9 @@ function Container({ children }) {
             <div className="relative flex h-16 items-center justify-between lg:border-b lg:border-sky-800">
               <div className="flex items-center px-2 lg:px-0">
                 <div className="flex-shrink-0">
-                  <img
-                    className="block h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=teal&shade=400"
-                    alt="Your Company"
-                  />
+                  <h1 className="text-2xl font-bold text-teal-400">
+                    ShortifyThis
+                  </h1>
                 </div>
               </div>
             </div>
