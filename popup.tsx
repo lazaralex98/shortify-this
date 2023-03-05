@@ -1,17 +1,17 @@
+import type { Session } from "@supabase/supabase-js"
 import { useEffect, useState } from "react"
 
 import Input from "~components/input"
-import { generateRandomString } from "~utils"
+import { generateRandomString, handleSession } from "~utils"
 
 import "./style.css"
 
 function IndexPopup() {
   const [url, setURL] = useState("https://very-long-url.com/")
   const [slug, setSlug] = useState(generateRandomString())
-  // TODO: fetch the username
-  const username = "alex"
   const [shortenedURL, setShortenedURL] = useState(url + slug)
   const [copied, setCopied] = useState(false)
+  const [ses, setSession] = useState<Session | null>(null)
 
   const saveInClipboard = () => {
     navigator.clipboard.writeText(shortenedURL)
@@ -25,6 +25,8 @@ function IndexPopup() {
   }
 
   useEffect(() => {
+    handleSession(setSession)
+
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       var activeTab = tabs[0]
       if (activeTab && activeTab.url) {
@@ -34,6 +36,8 @@ function IndexPopup() {
   }, [])
 
   useEffect(() => {
+    if (!ses) return
+    const username = ses.user.user_metadata.username
     setShortenedURL(`https://shortifythis.com/l/${username}/${slug}`)
   }, [url, slug])
 
