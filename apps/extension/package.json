@@ -1,8 +1,8 @@
 {
-  "name": "shortify-this",
-  "displayName": "Shortify this",
+  "name": "extension",
+  "displayName": "extension",
   "version": "0.0.1",
-  "description": "Copyes the url of the site you're on and creates a short link that redirects to it.",
+  "description": "Extension that copies the url of the site you're on and creates a short link that redirects to it.",
   "author": "lazaralex",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
@@ -22,6 +22,8 @@
   },
   "devDependencies": {
     "@plasmohq/prettier-plugin-sort-imports": "3.6.1",
+    "eslint-config-custom": "workspace:*",
+    "tsconfig": "workspace:*",
     "@types/chrome": "0.0.210",
     "@types/node": "18.11.18",
     "@types/react": "18.0.27",
