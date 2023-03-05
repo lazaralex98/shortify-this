@@ -1,0 +1,43 @@
+{
+  "name": "extension",
+  "displayName": "extension",
+  "version": "0.0.1",
+  "description": "Extension that copies the url of the site you're on and creates a short link that redirects to it.",
+  "author": "lazaralex",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "dev": "plasmo dev",
+    "build": "plasmo build",
+    "package": "plasmo package"
+  },
+  "dependencies": {
+    "@headlessui/react": "^1.7.12",
+    "@heroicons/react": "^2.0.16",
+    "@supabase/supabase-js": "^2.10.0",
+    "@tailwindcss/forms": "^0.5.3",
+    "plasmo": "0.65.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-query": "^3.39.3"
+  },
+  "devDependencies": {
+    "@plasmohq/prettier-plugin-sort-imports": "3.6.1",
+    "eslint-config-custom": "workspace:*",
+    "tsconfig": "workspace:*",
+    "@types/chrome": "0.0.210",
+    "@types/node": "18.11.18",
+    "@types/react": "18.0.27",
+    "@types/react-dom": "18.0.10",
+    "autoprefixer": "^10.4.13",
+    "postcss": "^8.1.0",
+    "prettier": "^2.8.4",
+    "prettier-plugin-tailwindcss": "^0.2.4",
+    "tailwindcss": "^3.2.7",
+    "typescript": "4.9.4"
+  },
+  "manifest": {
+    "host_permissions": [
+      "https://*/*"
+    ]
+  }
+}
