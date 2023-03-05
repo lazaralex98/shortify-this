@@ -1,10 +1,22 @@
 import type { Session } from "@supabase/supabase-js"
 import { useEffect, useState } from "react"
+import { QueryClient, QueryClientProvider, useMutation } from "react-query"
 
 import Input from "~components/input"
-import { generateRandomString, handleSession } from "~utils"
+import { supabase } from "~core/store"
+import { extractErrorMsg, generateRandomString, handleSession } from "~utils"
 
 import "./style.css"
+
+const queryClient = new QueryClient()
+
+export default function OptionsWrapper() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <IndexPopup />
+    </QueryClientProvider>
+  )
+}
 
 function IndexPopup() {
   const [url, setURL] = useState("https://very-long-url.com/")
@@ -18,11 +30,25 @@ function IndexPopup() {
     setCopied(true)
   }
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const link = useMutation(async (e: { preventDefault: () => void }) => {
     e.preventDefault()
-    // TODO: save link in db
-    // TODO: display loading state, success state, error state
-  }
+
+    const { data, error } = await supabase.from("links").select()
+    if (error) throw new Error(error.message)
+    if (data.find((link) => link.slug === slug)) {
+      throw new Error("Slug already exists")
+    }
+
+    const res = await supabase.from("links").insert([
+      {
+        user_id: ses.user.id,
+        slug: slug,
+        to: url
+      }
+    ])
+    if (res.error) throw new Error(res.error.message)
+    return res
+  })
 
   useEffect(() => {
     handleSession(setSession)
@@ -53,7 +79,7 @@ function IndexPopup() {
   return (
     <Container>
       <Header />
-      <form className="mt-4" onSubmit={handleSubmit}>
+      <form className="mt-4" onSubmit={link.mutate}>
         {/* url input */}
         <Input
           label="URL"
@@ -100,7 +126,10 @@ function IndexPopup() {
         <button
           type="submit"
           className="flex w-full mt-4 justify-center rounded-md bg-blue-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
-          Save link.
+          {link.isLoading && "Loading..."}
+          {link.isError && extractErrorMsg(link.error)}
+          {link.isSuccess && "We saved it!"}
+          {!link.isLoading && !link.isError && !link.isSuccess && "Save link"}
         </button>
         <p className="text-gray-400 sm:text-sm sm:leading-6 mt-2">
           <svg
@@ -121,8 +150,6 @@ function IndexPopup() {
     </Container>
   )
 }
-
-export default IndexPopup
 
 function Container({ children }: { children: React.ReactNode }) {
   return (
