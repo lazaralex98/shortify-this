@@ -17,3 +17,7 @@ export function extractErrorMsg(error: unknown) {
   if (typeof error === "string") return error
   return "An unknown error occurred"
 }
+
+export function classNames(...classes: (string | undefined)[]) {
+  return classes.filter(Boolean).join(" ")
+}

@@ -2,9 +2,15 @@ import type { Session } from "@supabase/supabase-js"
 import { useEffect, useState } from "react"
 import { QueryClient, QueryClientProvider, useMutation } from "react-query"
 
+import Info from "~components/info"
 import Input from "~components/input"
 import { supabase } from "~core/store"
-import { extractErrorMsg, generateRandomString, handleSession } from "~utils"
+import {
+  classNames,
+  extractErrorMsg,
+  generateRandomString,
+  handleSession
+} from "~utils"
 
 import "./style.css"
 
@@ -126,27 +132,29 @@ function IndexPopup() {
         {/* button */}
         <button
           type="submit"
-          className="flex w-full mt-4 justify-center rounded-md bg-blue-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+          disabled={link.isLoading || link.isError || link.isSuccess || !ses}
+          className={classNames(
+            "flex w-full mt-4 justify-center rounded-md bg-blue-600 py-2 px-3 text-sm font-semibold text-white shadow-sm",
+            "hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600",
+            "disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-blue-600"
+          )}>
           {link.isLoading && "Loading..."}
           {link.isError && extractErrorMsg(link.error)}
           {link.isSuccess && "We saved it!"}
           {!link.isLoading && !link.isError && !link.isSuccess && "Save link"}
         </button>
-        <p className="text-gray-400 sm:text-sm sm:leading-6 mt-2">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="w-5 h-5 inline-block">
-            <path
-              fillRule="evenodd"
-              d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 01.67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 11-.671-1.34l.041-.022zM12 9a.75.75 0 100-1.5.75.75 0 000 1.5z"
-              clipRule="evenodd"
-            />
-          </svg>{" "}
-          The link will not redirect to the actual url until you click the 'Save
-          link.' button.
-        </p>
+        {!ses && (
+          <p className="text-gray-400 sm:text-sm sm:leading-6 mt-2">
+            <Info /> To log in, right-click the extension icon in the top right
+            corner of your browser and click 'Options.'
+          </p>
+        )}
+        {ses && (
+          <p className="text-gray-400 sm:text-sm sm:leading-6 mt-2">
+            <Info /> The link will not redirect to the actual url until you
+            click the 'Save link.' button.
+          </p>
+        )}
       </form>
     </Container>
   )
