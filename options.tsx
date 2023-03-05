@@ -2,47 +2,62 @@ import "./style.css"
 
 import { useEffect, useState } from "react"
 import { QueryClient, QueryClientProvider, useMutation } from "react-query"
+import { ReactQueryDevtools } from "react-query/devtools"
 
 import Input from "~components/input"
 import { supabase } from "~core/store"
-import { generateRandomString, getURL } from "~utils"
+import { generateRandomString } from "~utils"
 
 const queryClient = new QueryClient()
 
-export default function Options() {
-  // TODO fetch username and premium status from db
-  const [session, setSession] = useState(null)
-
-  useEffect(() => {
-    async function getSession() {
-      const { data, error } = await supabase.auth.getSession()
-      if (error) {
-        console.log(error)
-      }
-      if (data) {
-        setSession(data.session)
-      }
-    }
-    if (!session) {
-      getSession()
-    }
-  }, [])
-
+export default function OptionsWrapper() {
   return (
     <QueryClientProvider client={queryClient}>
+      <Options />
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+  )
+}
+
+function Options() {
+  const [ses, setSession] = useState(null)
+  useEffect(() => {
+    async function handleSession() {
+      const { data, error } = await supabase.auth.getSession()
+      if (error || !data) return
+      setSession(data.session)
+    }
+    handleSession()
+  }, [])
+
+  if (!ses) {
+    return (
       <Container>
         <main className="relative -mt-32">
           <div className="mx-auto max-w-screen-xl px-4 pb-6 sm:px-6 lg:px-8 lg:pb-16">
             <div className="overflow-hidden rounded-lg bg-white shadow">
               <div className="divide-y divide-gray-200  lg:divide-y-0 lg:divide-x">
-                {!session && <AuthForm />}
-                {session && <OptionsForm />}
+                <AuthForm />
               </div>
             </div>
           </div>
         </main>
       </Container>
-    </QueryClientProvider>
+    )
+  }
+
+  return (
+    <Container>
+      <main className="relative -mt-32">
+        <div className="mx-auto max-w-screen-xl px-4 pb-6 sm:px-6 lg:px-8 lg:pb-16">
+          <div className="overflow-hidden rounded-lg bg-white shadow">
+            <div className="divide-y divide-gray-200  lg:divide-y-0 lg:divide-x">
+              <OptionsForm />
+            </div>
+          </div>
+        </div>
+      </main>
+    </Container>
   )
 }
 
@@ -120,7 +135,7 @@ function AuthForm() {
     return supabase.auth.signInWithOtp({
       email: email,
       options: {
-        emailRedirectTo: getURL()
+        emailRedirectTo: window.location.href
       }
     })
   })
