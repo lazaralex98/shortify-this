@@ -126,9 +126,9 @@ function Container({ children }) {
 function AuthForm() {
   const [email, setEmail] = useState("")
 
-  const auth = useMutation((e: { preventDefault: () => void }) => {
+  const auth = useMutation(async (e: { preventDefault: () => void }) => {
     e.preventDefault()
-    return supabase.auth.signInWithOtp({
+    return await supabase.auth.signInWithOtp({
       email: email,
       options: {
         emailRedirectTo: window.location.href,
