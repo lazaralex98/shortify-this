@@ -57,7 +57,7 @@ function Options() {
   )
 }
 
-function Container({ children }) {
+function Container({ children }: { children: React.ReactNode }) {
   return (
     <div>
       <div className="relative overflow-hidden bg-sky-700 pb-32">

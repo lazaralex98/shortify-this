@@ -32,6 +32,7 @@ function IndexPopup() {
 
   const link = useMutation(async (e: { preventDefault: () => void }) => {
     e.preventDefault()
+    if (!ses) throw new Error("You are not logged in.")
 
     const { data, error } = await supabase.from("links").select()
     if (error) throw new Error(error.message)

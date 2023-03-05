@@ -8,7 +8,7 @@ export function generateRandomString(length = 7) {
 
 export async function handleSession(callbackFn: (session: Session) => void) {
   const { data, error } = await supabase.auth.getSession()
-  if (error || !data) return
+  if (error || !data || !data.session) return
   callbackFn(data.session)
 }
 
