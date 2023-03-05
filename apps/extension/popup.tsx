@@ -2,6 +2,7 @@ import type { Session } from "@supabase/supabase-js"
 import { useEffect, useState } from "react"
 import { QueryClient, QueryClientProvider, useMutation } from "react-query"
 
+import { Button } from "~components/button"
 import Info from "~components/info"
 import Input from "~components/input"
 import { supabase } from "~core/store"
@@ -130,19 +131,13 @@ function IndexPopup() {
         </p>
 
         {/* button */}
-        <button
-          type="submit"
-          disabled={link.isLoading || link.isError || link.isSuccess || !ses}
-          className={classNames(
-            "flex w-full mt-4 justify-center rounded-md bg-blue-600 py-2 px-3 text-sm font-semibold text-white shadow-sm",
-            "hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600",
-            "disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-blue-600"
-          )}>
+        <Button
+          disabled={link.isLoading || link.isError || link.isSuccess || !ses}>
           {link.isLoading && "Loading..."}
           {link.isError && extractErrorMsg(link.error)}
           {link.isSuccess && "We saved it!"}
           {!link.isLoading && !link.isError && !link.isSuccess && "Save link"}
-        </button>
+        </Button>
         {!ses && (
           <p className="text-gray-400 sm:text-sm sm:leading-6 mt-2">
             <Info /> To log in, right-click the extension icon in the top right

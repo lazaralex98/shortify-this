@@ -5,9 +5,10 @@ import { useEffect, useState } from "react"
 import { QueryClient, QueryClientProvider, useMutation } from "react-query"
 import { ReactQueryDevtools } from "react-query/devtools"
 
+import { Button } from "~components/button"
 import Input from "~components/input"
 import { supabase } from "~core/store"
-import { generateRandomString, handleSession } from "~utils"
+import { classNames, generateRandomString, handleSession } from "~utils"
 
 const queryClient = new QueryClient()
 
@@ -154,9 +155,7 @@ function AuthForm() {
       />
 
       <div>
-        <button
-          type="submit"
-          className="flex w-full justify-center rounded-md bg-blue-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+        <Button disabled={auth.isLoading || auth.isError || auth.isSuccess}>
           {auth.isLoading && "Loading..."}
           {auth.isError && "Error"}
           {auth.isSuccess && "Check your email!"}
@@ -164,7 +163,7 @@ function AuthForm() {
             !auth.isError &&
             !auth.isSuccess &&
             "Send magic link!"}
-        </button>
+        </Button>
       </div>
     </form>
   )
