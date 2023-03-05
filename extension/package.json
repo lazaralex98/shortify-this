@@ -5,6 +5,7 @@
   "description": "Copyes the url of the site you're on and creates a short link that redirects to it.",
   "author": "lazaralex",
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "dev": "plasmo dev",
     "build": "plasmo build",
     "package": "plasmo package"
