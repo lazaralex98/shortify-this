@@ -1,5 +1,6 @@
 import { classNames } from "~utils"
 
+// TODO extract all components in a "ui" package to be used in extension and site
 export function Button({
   disabled,
   children

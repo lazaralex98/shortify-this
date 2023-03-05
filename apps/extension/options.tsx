@@ -132,6 +132,7 @@ function AuthForm() {
     return await supabase.auth.signInWithOtp({
       email: email,
       options: {
+        // TODO redirecting to a "thank you" page on the site would be nicer for the user & it would make it possible to host this on a domain (shortifythis.com) instead of an extension url (chrome-extension://...)
         emailRedirectTo: window.location.href,
         data: {
           username: generateRandomString()

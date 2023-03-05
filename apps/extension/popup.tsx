@@ -6,12 +6,7 @@ import { Button } from "~components/button"
 import Info from "~components/info"
 import Input from "~components/input"
 import { supabase } from "~core/store"
-import {
-  classNames,
-  extractErrorMsg,
-  generateRandomString,
-  handleSession
-} from "~utils"
+import { extractErrorMsg, generateRandomString, handleSession } from "~utils"
 
 import "./style.css"
 
