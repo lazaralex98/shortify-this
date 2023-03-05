@@ -7,7 +7,7 @@ import { ReactQueryDevtools } from "react-query/devtools"
 
 import Input from "~components/input"
 import { supabase } from "~core/store"
-import { generateRandomString } from "~utils"
+import { generateRandomString, handleSession } from "~utils"
 
 const queryClient = new QueryClient()
 
@@ -23,12 +23,7 @@ export default function OptionsWrapper() {
 function Options() {
   const [ses, setSession] = useState<Session | null>(null)
   useEffect(() => {
-    async function handleSession() {
-      const { data, error } = await supabase.auth.getSession()
-      if (error || !data) return
-      setSession(data.session)
-    }
-    handleSession()
+    handleSession(setSession)
   }, [])
 
   if (!ses) {
